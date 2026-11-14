@@ -1,22 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
-&lt;manifest xmlns:android="http://schemas.android.com/apk/res/android"&gt;
-
-    &lt;application
-        android:allowBackup="false"
+    <application
+        android:allowBackup="true"
         android:label="DAKOTA RP"
-        android:theme="@android:style/Theme.Material.NoActionBar"
-        android:usesCleartextTraffic="false"&gt;
+        android:supportsRtl="true"
+        android:theme="@android:style/Theme.Material.NoActionBar">
 
-        &lt;activity
+        <activity
             android:name=".MainActivity"
-            android:exported="true"&gt;
+            android:exported="true">
 
-            &lt;intent-filter&gt;
-                &lt;action android:name="android.intent.action.MAIN" /&gt;
-                &lt;category android:name="android.intent.category.LAUNCHER" /&gt;
-            &lt;/intent-filter&gt;
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
 
-        &lt;/activity&gt;
-    &lt;/application&gt;
+        </activity>
 
-&lt;/manifest&gt;
+    </application>
+
+</manifest>
