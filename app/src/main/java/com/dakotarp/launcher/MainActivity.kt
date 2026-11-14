@@ -1,14 +1,11 @@
-
 package com.dakotarp.launcher
 
 import android.app.Activity
 import android.os.Bundle
 import android.content.Intent
-import android.content.ComponentName
-import android.net.Uri
 import android.content.ClipData
 import android.content.ClipboardManager
-import android.content.pm.ResolveInfo
+import android.net.Uri
 import android.graphics.Color
 import android.graphics.Typeface
 import android.graphics.drawable.GradientDrawable
@@ -16,16 +13,17 @@ import android.view.Gravity
 import android.widget.LinearLayout
 import android.widget.ScrollView
 import android.widget.TextView
+import android.widget.ImageView
 import android.widget.Toast
 
 class MainActivity : Activity() {
 
-    private val bg = Color.rgb(9, 11, 16)
-    private val panel = Color.rgb(20, 25, 35)
-    private val orange = Color.rgb(255, 107, 0)
-    private val yellow = Color.rgb(255, 184, 0)
+    private val bg = Color.rgb(7, 8, 12)
+    private val panel = Color.rgb(17, 19, 25)
+    private val red = Color.rgb(235, 35, 55)
+    private val silver = Color.rgb(205, 211, 222)
     private val white = Color.WHITE
-    private val muted = Color.rgb(146, 154, 170)
+    private val muted = Color.rgb(135, 143, 157)
 
     private val serverAddress = "188.127.241.74:3015"
 
@@ -54,29 +52,60 @@ class MainActivity : Activity() {
             gravity = Gravity.CENTER_VERTICAL
         }
 
-        header.addView(text("DAKOTA", 27, orange, true))
-        header.addView(text(" RP", 27, yellow, true))
+        val logo = ImageView(this).apply {
+            setImageResource(
+                resources.getIdentifier(
+                    "dakota_logo",
+                    "drawable",
+                    packageName
+                )
+            )
+            scaleType = ImageView.ScaleType.FIT_CENTER
+        }
+
+        val logoId = resources.getIdentifier(
+            "dakota_logo",
+            "drawable",
+            packageName
+        )
+
+        if (logoId != 0) {
+            header.addView(
+                logo,
+                LinearLayout.LayoutParams(dp(58), dp(58))
+            )
+        }
+
+        val brand = LinearLayout(this).apply {
+            orientation = LinearLayout.VERTICAL
+            gravity = Gravity.CENTER_VERTICAL
+            setPadding(dp(10), 0, 0, 0)
+        }
+
+        brand.addView(text("DAKOTA", 25, white, true))
+        brand.addView(text("ROLEPLAY", 10, red, true))
+        header.addView(brand)
 
         root.addView(header)
 
-        addText(root, "ROLEPLAY • MOBILE LAUNCHER", 11, muted, true)
+        addText(root, "MOBILE GAME LAUNCHER", 10, muted, true)
         addSpace(root, 25)
 
         // HERO
         val hero = card(
             root,
             intArrayOf(
-                Color.rgb(40, 24, 13),
+                Color.rgb(49, 10, 18),
                 panel
             ),
-            Color.rgb(117, 64, 27)
+            red
         )
 
-        addText(hero, "●  DAKOTA RP LAUNCHER", 11, yellow, true)
-        addSpace(hero, 17)
+        addText(hero, "●  OFFICIAL PROJECT", 10, red, true)
+        addSpace(hero, 15)
 
-        addText(hero, "ТВОЯ НОВА", 29, white, true)
-        addText(hero, "ІСТОРІЯ ПОЧИНАЄТЬСЯ ТУТ", 24, orange, true)
+        addText(hero, "ТВОЯ ІСТОРІЯ", 28, white, true)
+        addText(hero, "ПОЧИНАЄТЬСЯ ТУТ", 23, red, true)
 
         addSpace(hero, 12)
 
@@ -85,76 +114,50 @@ class MainActivity : Activity() {
             "Створи власного персонажа, знайди друзів, " +
                 "побудуй кар'єру та стань частиною DAKOTA RP.",
             13,
-            Color.LTGRAY
+            silver
         )
 
         addSpace(hero, 18)
 
         addButton(hero, "ВІДКРИТИ САЙТ") {
-            openLink(
-                "https://kirnasovskiy4-lgtm.github.io/DAKOTA-RP/"
-            )
+            openLink("https://kirnasovskiy4-lgtm.github.io/DAKOTA-RP/")
         }
-
-        addSpace(root, 20)
-
-        // DEVELOPMENT STATUS
-        val status = card(
-            root,
-            intArrayOf(
-                Color.rgb(36, 23, 14),
-                panel
-            ),
-            Color.rgb(117, 64, 27)
-        )
-
-        addText(status, "🚧  ПРОЄКТ DAKOTA RP", 17, yellow, true)
-
-        addText(
-            status,
-            "Лаунчер підключений до тестового клієнта. " +
-                "Слідкуй за оновленнями проєкту.",
-            12,
-            muted
-        )
 
         addSpace(root, 25)
 
-        // SERVER SECTION
-        addText(root, "01 / ІГРОВІ СЕРВЕРИ", 11, orange, true)
-        addText(root, "ОБЕРИ СЕРВЕР", 25, white, true)
+        // SERVER
+        addText(root, "01 / GAME SERVERS", 10, red, true)
+        addText(root, "ІГРОВИЙ СЕРВЕР", 24, white, true)
 
-        addSpace(root, 12)
+        addSpace(root, 10)
 
         val server = card(
             root,
             intArrayOf(
-                Color.rgb(27, 33, 45),
+                Color.rgb(30, 32, 41),
                 panel
             ),
-            Color.rgb(48, 57, 74)
+            Color.rgb(75, 80, 94)
         )
 
-        addText(server, "DAKOTA RP", 23, yellow, true)
-        addText(server, "SA-MP • ANDROID", 11, muted, true)
+        addText(server, "DAKOTA RP", 24, white, true)
+        addText(server, "SA-MP • ANDROID", 10, red, true)
 
-        addSpace(server, 15)
+        addSpace(server, 18)
 
-        addText(server, "АДРЕС СЕРВЕРА", 10, muted, true)
-        addText(server, serverAddress, 17, white, true)
+        addText(server, "АДРЕСА СЕРВЕРА", 10, muted, true)
+        addText(server, serverAddress, 17, silver, true)
 
-        addSpace(server, 8)
+        addSpace(server, 10)
 
         addButton(server, "КОПІЮВАТИ IP") {
             copyServerAddress()
             Toast.makeText(
                 this,
-                "Адресу сервера скопійовано",
+                "IP сервера скопійовано",
                 Toast.LENGTH_SHORT
             ).show()
         }
-
-        addSpace(server, 10)
 
         addButton(server, "ЗАЙТИ НА СЕРВЕР") {
             launchSamp()
@@ -162,105 +165,73 @@ class MainActivity : Activity() {
 
         addSpace(root, 25)
 
-        // SOCIAL NETWORKS
-        addText(root, "02 / СОЦІАЛЬНІ МЕРЕЖІ", 11, orange, true)
-        addText(root, "СЛІДКУЙ ЗА DAKOTA RP", 22, white, true)
+        // SOCIALS
+        addText(root, "02 / COMMUNITY", 10, red, true)
+        addText(root, "НАШІ СОЦІАЛЬНІ МЕРЕЖІ", 21, white, true)
 
-        addSpace(root, 12)
+        addSpace(root, 10)
 
-        // TELEGRAM
         val telegram = card(
             root,
             intArrayOf(
-                Color.rgb(22, 139, 197),
-                Color.rgb(34, 158, 217)
+                Color.rgb(20, 25, 34),
+                panel
             ),
-            Color.rgb(34, 158, 217)
+            Color.rgb(60, 75, 95)
         )
 
-        addText(telegram, "✈  TELEGRAM", 20, white, true)
+        addText(telegram, "TELEGRAM", 19, silver, true)
         addText(
             telegram,
-            "Наш канал. Новини та оновлення проєкту.",
+            "Новини, оновлення та життя проєкту.",
             12,
-            white
+            muted
         )
 
-        addSpace(telegram, 10)
-
-        addButton(telegram, "ПЕРЕЙТИ В TELEGRAM") {
+        addButton(telegram, "ВІДКРИТИ TELEGRAM") {
             openLink("https://t.me/+rGdQ8ui9egg1YWYy")
         }
 
-        // TIKTOK
         val tiktok = card(
             root,
             intArrayOf(
-                Color.rgb(23, 23, 23),
-                Color.rgb(48, 48, 48)
+                Color.rgb(25, 25, 30),
+                panel
             ),
-            Color.rgb(68, 68, 68)
+            Color.rgb(70, 70, 80)
         )
 
-        addText(tiktok, "♪  TIKTOK", 20, white, true)
+        addText(tiktok, "TIKTOK", 19, silver, true)
         addText(
             tiktok,
             "Відео та новини нашого проєкту.",
             12,
-            Color.LTGRAY
+            muted
         )
         addSpace(tiktok, 5)
-        addText(
-            tiktok,
-            "СКОРО БУДЕ ДОСТУПНО",
-            10,
-            yellow,
-            true
-        )
+        addText(tiktok, "СКОРО БУДЕ ДОСТУПНО", 10, red, true)
 
-        addSpace(root, 25)
+        addSpace(root, 28)
 
-        // FOOTER
-        addText(
-            root,
-            "DAKOTA RP • MOBILE LAUNCHER",
-            11,
-            muted,
-            true
-        )
-
-        addText(
-            root,
-            "© 2026 DAKOTA RP",
-            10,
-            Color.GRAY
-        )
+        addText(root, "DAKOTA RP • MOBILE LAUNCHER", 10, muted, true)
+        addText(root, "© 2026 DAKOTA RP", 10, muted)
 
         setContentView(scroll)
     }
 
-    // FIND AND OPEN SA-MP
     private fun launchSamp() {
-
         copyServerAddress()
 
-        val launcherIntent = Intent(
-            Intent.ACTION_MAIN
-        ).addCategory(
+        val intent = Intent(Intent.ACTION_MAIN).addCategory(
             Intent.CATEGORY_LAUNCHER
         )
 
-        val apps: List<ResolveInfo> =
-            packageManager.queryIntentActivities(
-                launcherIntent,
-                0
-            )
+        val apps = packageManager.queryIntentActivities(intent, 0)
 
         val samp = apps.firstOrNull {
-            val appName = it.loadLabel(packageManager).toString()
-
-            appName.contains("SA-MP", ignoreCase = true) ||
-                appName.contains("SAMP", ignoreCase = true)
+            val name = it.loadLabel(packageManager).toString()
+            name.contains("SA-MP", true) ||
+                name.contains("SAMP", true)
         }
 
         if (samp == null) {
@@ -273,57 +244,49 @@ class MainActivity : Activity() {
         }
 
         try {
-            val launchIntent = Intent(
-                Intent.ACTION_MAIN
-            ).apply {
-                addCategory(Intent.CATEGORY_LAUNCHER)
+            val launchIntent = packageManager.getLaunchIntentForPackage(
+                samp.activityInfo.packageName
+            )
 
-                component = ComponentName(
-                    samp.activityInfo.packageName,
-                    samp.activityInfo.name
-                )
-
-                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            if (launchIntent == null) {
+                Toast.makeText(
+                    this,
+                    "Не вдалося відкрити SA-MP",
+                    Toast.LENGTH_LONG
+                ).show()
+                return
             }
 
             startActivity(launchIntent)
 
             Toast.makeText(
                 this,
-                "IP DAKOTA RP скопійовано. Якщо потрібно, встав його в клієнті.",
+                "IP скопійовано. За потреби встав його в клієнті.",
                 Toast.LENGTH_LONG
             ).show()
 
         } catch (e: Exception) {
             Toast.makeText(
                 this,
-                "Не вдалося відкрити SA-MP",
+                "Помилка запуску SA-MP",
                 Toast.LENGTH_LONG
             ).show()
         }
     }
 
-    // COPY SERVER IP
     private fun copyServerAddress() {
-        val clipboard =
-            getSystemService(CLIPBOARD_SERVICE) as ClipboardManager
+        val clipboard = getSystemService(CLIPBOARD_SERVICE)
+                as ClipboardManager
 
         clipboard.setPrimaryClip(
-            ClipData.newPlainText(
-                "DAKOTA RP",
-                serverAddress
-            )
+            ClipData.newPlainText("DAKOTA RP", serverAddress)
         )
     }
 
-    // OPEN LINKS
     private fun openLink(url: String) {
         try {
             startActivity(
-                Intent(
-                    Intent.ACTION_VIEW,
-                    Uri.parse(url)
-                )
+                Intent(Intent.ACTION_VIEW, Uri.parse(url))
             )
         } catch (e: Exception) {
             Toast.makeText(
@@ -334,7 +297,6 @@ class MainActivity : Activity() {
         }
     }
 
-    // CREATE TEXT
     private fun text(
         value: String,
         size: Int,
@@ -364,13 +326,11 @@ class MainActivity : Activity() {
         parent.addView(text(value, size, color, bold))
     }
 
-    // CREATE CARD
     private fun card(
         parent: LinearLayout,
         colors: IntArray,
         borderColor: Int
     ): LinearLayout {
-
         val layout = LinearLayout(this).apply {
             orientation = LinearLayout.VERTICAL
             setPadding(dp(18), dp(18), dp(18), dp(18))
@@ -379,7 +339,7 @@ class MainActivity : Activity() {
                 GradientDrawable.Orientation.TL_BR,
                 colors
             ).apply {
-                cornerRadius = dp(13).toFloat()
+                cornerRadius = dp(15).toFloat()
                 setStroke(dp(1), borderColor)
             }
         }
@@ -397,7 +357,6 @@ class MainActivity : Activity() {
         return layout
     }
 
-    // CREATE BUTTON
     private fun addButton(
         parent: LinearLayout,
         label: String,
@@ -407,20 +366,22 @@ class MainActivity : Activity() {
             text = label
             textSize = 13f
             gravity = Gravity.CENTER
-            setTextColor(Color.rgb(23, 16, 10))
+            setTextColor(white)
             typeface = Typeface.DEFAULT_BOLD
             setPadding(dp(14), dp(15), dp(14), dp(15))
 
             background = GradientDrawable(
                 GradientDrawable.Orientation.LEFT_RIGHT,
-                intArrayOf(orange, yellow)
+                intArrayOf(
+                    Color.rgb(145, 15, 33),
+                    red
+                )
             ).apply {
-                cornerRadius = dp(8).toFloat()
+                cornerRadius = dp(9).toFloat()
+                setStroke(dp(1), Color.rgb(255, 85, 100))
             }
 
-            setOnClickListener {
-                action()
-            }
+            setOnClickListener { action() }
         }
 
         parent.addView(
@@ -434,18 +395,10 @@ class MainActivity : Activity() {
         )
     }
 
-    private fun addSpace(
-        parent: LinearLayout,
-        height: Int
-    ) {
-        val space = android.view.View(this)
-
+    private fun addSpace(parent: LinearLayout, height: Int) {
         parent.addView(
-            space,
-            LinearLayout.LayoutParams(
-                1,
-                dp(height)
-            )
+            android.view.View(this),
+            LinearLayout.LayoutParams(1, dp(height))
         )
     }
 
